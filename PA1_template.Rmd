@@ -30,7 +30,16 @@ library(ggplot2)
 ```
 
 ## Loading and preprocessing the data
+```{r}
+unzip("activity.zip", exdir = ".")
+df <- read.csv("activity.csv")
+df$date <- as.Date(df$date)
+```
 
+Preview data:
+```{r}
+print(head(df))
+```
 
 
 ## What is mean total number of steps taken per day?
