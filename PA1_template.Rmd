@@ -43,7 +43,20 @@ print(head(df))
 
 
 ## What is mean total number of steps taken per day?
+```{r}
+steps.df <- df %>%
+  group_by(date) %>%
+  summarise(steps = sum(steps))
 
+ggplot(steps.df, aes(x = steps)) +
+  geom_histogram(bins = 11) +
+  labs(title = "Mean Total Number of Steps Taken Per Day",
+       x = "Step Count",
+       y = "Frequency")
+
+mean(steps.df$steps, na.rm = TRUE)
+median(steps.df$steps, na.rm = TRUE)
+```
 
 
 ## What is the average daily activity pattern?
