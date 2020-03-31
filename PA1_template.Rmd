@@ -119,3 +119,18 @@ median(steps.df.no.na$steps, na.rm = TRUE)
 Median value of number of steps converges towards the mean value.  This is because with more data filled with the mean values, there is an increased number of values around the mean value.
 
 ## Are there differences in activity patterns between weekdays and weekends?
+```{r}
+weekday.steps.df <- df.no.na %>%
+  mutate(weekday = ifelse(weekdays(date) %in% c("Saturday", "Sunday"), "Weekend", "Weekday")) %>%
+  group_by(weekday, interval) %>%
+  summarize(mean.steps = mean(steps, na.rm = TRUE))
+
+ggplot(weekday.steps.df, aes(interval, mean.steps)) +
+  geom_line() +
+  facet_grid(weekday ~ .) +
+  labs(title = "Differences in activity patterns between weekdays and weekends",
+       x = "5-minute Interval",
+       y = "Number of Steps")
+```
+
+People tend to be more active in earlier periods of the day during the weekday. 
