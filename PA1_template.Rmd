@@ -60,8 +60,24 @@ median(steps.df$steps, na.rm = TRUE)
 
 
 ## What is the average daily activity pattern?
+```{r}
+average.daily.df <- df %>%
+  group_by(interval) %>%
+  summarize(steps = mean(steps, na.rm = TRUE))
 
+ggplot(average.daily.df, aes(x = interval, y = steps)) +
+  geom_line() +
+  labs(title = "Average Daily Activity Pattern",
+       x = "5-Minute Intervals",
+       y = "Average Number of Steps Taken")
+```
 
+On average across all the days in the dataset, the 5-minute interval contains the maximum number of steps?
+
+```{r}
+average.daily.df %>%
+  filter(steps == max(steps))
+```
 
 ## Imputing missing values
 
