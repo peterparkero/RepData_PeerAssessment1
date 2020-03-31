@@ -64,9 +64,10 @@ median(steps.df$steps, na.rm = TRUE)
 ```{r}
 average.daily.df <- df %>%
   group_by(interval) %>%
-  summarize(steps = mean(steps, na.rm = TRUE))
+  summarize(mean.steps = mean(steps, na.rm = TRUE)) %>%
+  ungroup()
 
-ggplot(average.daily.df, aes(x = interval, y = steps)) +
+ggplot(average.daily.df, aes(x = interval, y = mean.steps)) +
   geom_line() +
   labs(title = "Average Daily Activity Pattern",
        x = "5-Minute Intervals",
@@ -77,11 +78,26 @@ On average across all the days in the dataset, the 5-minute interval contains th
 
 ```{r}
 average.daily.df %>%
-  filter(steps == max(steps))
+  filter(mean.steps == max(mean.steps))
 ```
 
 ## Imputing missing values
+First, find the number of NA values in the data.
+```{r}
+sum(is.na(average.daily.df$steps))
+```
 
+Replace NA values with the mean steps of that interval.
+```{r}
+df.no.na <- df %>%
+  left_join(average.daily.df, by = "interval") %>%
+  mutate(steps = ifelse(is.na(steps), mean.steps, steps)) %>%
+  select(-mean.steps)
+```
 
+Preview data
+```{r}
+print(head(df.no.na))
+```
 
 ## Are there differences in activity patterns between weekdays and weekends?
