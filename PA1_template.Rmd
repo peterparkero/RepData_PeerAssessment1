@@ -100,4 +100,22 @@ Preview data
 print(head(df.no.na))
 ```
 
+Histogram of the total number of steps taken each day after filling na with mean values of that interval
+```{r}
+steps.df.no.na <- df.no.na %>%
+  group_by(date) %>%
+  summarise(steps = sum(steps))
+
+ggplot(steps.df.no.na, aes(x = steps)) +
+  geom_histogram(bins = 11) +
+  labs(title = "Mean Total Number of Steps Taken Per Day (NA values filled)",
+       x = "Step Count",
+       y = "Frequency")
+
+mean(steps.df.no.na$steps, na.rm = TRUE)
+median(steps.df.no.na$steps, na.rm = TRUE)
+```
+
+Median value of number of steps converges towards the mean value.  This is because with more data filled with the mean values, there is an increased number of values around the mean value.
+
 ## Are there differences in activity patterns between weekdays and weekends?
